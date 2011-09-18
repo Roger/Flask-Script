@@ -280,10 +280,15 @@ class Shell(Command):
         context = self.get_context()
         if not no_ipython:
             try:
-                import IPython
-                sh = IPython.Shell.IPShellEmbed(banner=self.banner)
-                sh(global_ns=dict(), local_ns=context)
-                return
+                import IPython 
+                if IPython.__version__ >= '0.11':
+                    IPython.embed(banner1=self.banner, user_ns=context, user_global_ns=dict())
+               
+                else:
+                    sh = IPython.Shell.IPShellEmbed(banner=self.banner)
+                    sh(global_ns=dict(), local_ns=context)
+                
+                return 
             except ImportError:
                 pass
 
